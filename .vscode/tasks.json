@@ -1,0 +1,151 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "01. UV Create Virtual Environment",
+            "type": "process",
+            "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+            "args": ["venv", ".venv"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "02. Activate Virtual Environment",
+            "type": "process",
+            "command": "powershell.exe",
+            "args": ["-ExecutionPolicy", "Bypass", "-Command", ".\\.venv\\Scripts\\Activate.ps1"],
+            "windows": {
+                "command": "powershell.exe",
+                "args": ["-ExecutionPolicy", "Bypass", "-Command", ".\\.venv\\Scripts\\Activate.ps1"]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "clear": false,
+                "close": false
+            },
+            "isBackground": false
+        },
+        {
+            "label": "03. UV Install Dependencies",
+            "type": "process",
+            "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+            "args": ["pip", "install", "-r", "pyproject.toml"],
+            //"args": ["pip", "install", "-r", "ai_agent_tutorials\\ai_data_visualisation_agent\\requirements.txt"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "02. Activate Virtual Environment"
+            ]
+        },
+        {
+            "label": "04. UV cache clean",
+            "type": "process",
+            "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+            "args": ["cache", "clean"],
+            "dependsOn": [
+                "02. Activate Virtual Environment"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "05. UV sync",
+            "type": "process",
+            "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+            "args": ["sync"],
+            "dependsOn": [
+                "02. Activate Virtual Environment"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "06. Delete Virtual Environment",
+            "type": "process",
+            "command": "powershell.exe",
+            "args": ["-ExecutionPolicy", "Bypass", "-Command", "Remove-Item -Recurse -Force .\\.venv"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "07. UV pip list",
+            "type": "process",
+            "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+            "args": ["pip", "-v", "list"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "08. Run Streamlit Application",
+            "type": "process",
+            "command": ".\\.venv\\Scripts\\streamlit.exe",
+            "args": ["run", "ai_agent_tutorials\\ai_data_visualisation_agent\\ai_data_visualisation_agent.py"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        }
+    ]
+}
