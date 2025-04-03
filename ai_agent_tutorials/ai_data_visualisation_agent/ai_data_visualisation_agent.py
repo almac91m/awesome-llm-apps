@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import json
 import re
 import sys
@@ -13,6 +14,9 @@ import base64
 from io import BytesIO
 from together import Together
 from e2b_code_interpreter import Sandbox
+import truststore
+
+truststore.inject_into_ssl()
 
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 
@@ -93,20 +97,30 @@ def main():
     st.write("Upload your dataset and ask questions about it!")
 
     # Initialize session state variables
+    load_dotenv()
+
     if 'together_api_key' not in st.session_state:
-        st.session_state.together_api_key = ''
+        st.session_state.together_api_key = os.getenv('TOGETHER_API_KEY', '')
     if 'e2b_api_key' not in st.session_state:
-        st.session_state.e2b_api_key = ''
+        st.session_state.e2b_api_key = os.getenv('E2B_API_KEY', '')
     if 'model_name' not in st.session_state:
         st.session_state.model_name = ''
 
     with st.sidebar:
         st.header("API Keys and Model Configuration")
-        st.session_state.together_api_key = st.sidebar.text_input("Together AI API Key", type="password")
+        st.session_state.together_api_key = st.sidebar.text_input(
+            "Together AI API Key", 
+            type="password",
+            value = os.getenv('OPENAI_API_KEY', '')
+        )
         st.sidebar.info("💡 Everyone gets a free $1 credit by Together AI - AI Acceleration Cloud platform")
         st.sidebar.markdown("[Get Together AI API Key](https://api.together.ai/signin)")
         
-        st.session_state.e2b_api_key = st.sidebar.text_input("Enter E2B API Key", type="password")
+        st.session_state.e2b_api_key = st.sidebar.text_input(
+            "Enter E2B API Key", 
+            type="password",
+            value = os.getenv('E2B_API_KEY', '')
+        )
         st.sidebar.markdown("[Get E2B API Key](https://e2b.dev/docs/legacy/getting-started/api-key)")
         
         # Add model selection dropdown

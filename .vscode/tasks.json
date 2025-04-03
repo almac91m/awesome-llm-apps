@@ -131,10 +131,27 @@
             }
         },
         {
-            "label": "08. Run Streamlit Application",
+            "label": "08. Run Streamlit (ai_data_visualisation_agent)",
             "type": "process",
             "command": ".\\.venv\\Scripts\\streamlit.exe",
             "args": ["run", "ai_agent_tutorials\\ai_data_visualisation_agent\\ai_data_visualisation_agent.py"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "09. Run Streamlit (chat_pdf)",
+            "type": "process",
+            "command": ".\\.venv\\Scripts\\streamlit.exe",
+            "args": ["run", "chat_with_X_tutorials\\chat_with_pdf\\chat_pdf.py"],
             "group": {
                 "kind": "build",
                 "isDefault": false

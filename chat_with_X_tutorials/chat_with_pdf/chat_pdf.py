@@ -3,6 +3,9 @@ import tempfile
 import streamlit as st
 from embedchain import App
 
+import truststore
+truststore.inject_into_ssl()
+
 def embedchain_bot(db_path, api_key):
     return App.from_config(
         config={
@@ -14,7 +17,11 @@ def embedchain_bot(db_path, api_key):
 
 st.title("Chat with PDF")
 
-openai_access_token = st.text_input("OpenAI API Key", type="password")
+openai_access_token = st.text_input(
+    "OpenAI API Key", 
+    type="password",
+    value = os.getenv('OPENAI_API_KEY', '')
+)
 
 if openai_access_token:
     db_path = tempfile.mkdtemp()
